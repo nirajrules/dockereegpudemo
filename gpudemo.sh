@@ -1,13 +1,10 @@
-if [ "$1" == "" ]; then
-    echo "Usage: ./gpudemo.sh <aws-instance-private-ip> <aws-instance-public-ip>"
-    exit
-fi
-if [ "$2" == "" ]; then
-    echo "Usage: ./gpudemo.sh <aws-instance-private-ip> <aws-instance-public-ip>"
+if [ "$1" == "" -o "$2" == "" -o "$3" == "" ]; then
+    echo "Usage: ./gpudemo.sh <aws-instance-private-ip> <aws-instance-public-ip> <docker-ee-bits-repoURL>"
     exit
 fi
 privateIP=$1
 publicIP=$2
+DOCKER_EE_URL=$3
 if [ -x "$(command -v docker)" ]; then
     docker service rm $(docker service ls -q)
     docker container rm -f $(docker container ls -aq)
@@ -21,7 +18,6 @@ sudo apt-get install \
     ca-certificates \
     curl \
     software-properties-common
-DOCKER_EE_URL="https://storebits.docker.com/ee/m/sub-7faa6023-4a29-49d5-b94a-88229b4c065e"
 DOCKER_EE_VERSION=19.03
 curl -fsSL "${DOCKER_EE_URL}/ubuntu/gpg" | sudo apt-key add -
 sudo add-apt-repository \
